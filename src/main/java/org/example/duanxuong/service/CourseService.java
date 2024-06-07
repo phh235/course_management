@@ -1,1 +1,1 @@
-package org.example.duanxuong.service;public interface CourseService {}
+package org.example.duanxuong.service;import org.example.duanxuong.entity.Course;import java.util.List;public interface CourseService {    List<Course> getAllCourse();    void doGetDeleteByIdCourse(int id);    Course doSaveCourse(Course course);}
