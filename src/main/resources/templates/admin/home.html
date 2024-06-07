@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="icon" href="https://www.udemy.com/staticx/udemy/images/v8/favicon-32x32.png">
+	<!--=============== REMIXICONS ===============-->
+	<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.4.0/remixicon.css}"
+				crossorigin=""/>
+	<!-- Font Awesome -->
+	<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+			rel="stylesheet"
+	/>
+	<!-- MDB -->
+	<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
+			rel="stylesheet"
+	/>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<!--=============== CSS ===============-->
+	<link rel="stylesheet" th:href="@{/assets/css/styles.css}"/>
+
+	<title>Course Management</title>
+</head>
+<body>
+<!-- Sidebar bg -->
+<!-- <img src="assets/img/sidebar-bg.jpg" alt="sidebar img" class="bg-image"> -->
+
+<!--=============== HEADER ===============-->
+<header class="header">
+	<div class="header__container container">
+		<div class="header__toggle" id="header-toggle">
+			<i class="ri-menu-line"></i>
+		</div>
+	</div>
+</header>
+
+<!--=============== SIDEBAR ===============-->
+<div th:replace="~{admin/sidebar :: sidebar}"></div>
+
+<!--=============== MAIN ===============-->
+<main class="main container" id="main">
+	<h1>TRANG CHỦ</h1>
+	<div class="p-4">
+		<div class="row row-cols-3 g-3">
+			<div class="col">
+				<div class="card h-100 shadow-2-strong">
+					<div class="card-body">
+						<div class="float-end">
+							<i class="fas fa-user-group"></i>
+						</div>
+						<h5 class="text-muted fw-normal mt-0" title="Number of Customers">Người dùng</h5>
+						<h3 class="mt-3 mb-3">235</h3>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card h-100 shadow-2-strong">
+					<div class="card-body">
+						<div class="float-end">
+							<i class="fas fa-graduation-cap"></i>
+						</div>
+						<h5 class="text-muted fw-normal mt-0" title="Number of Customers">Khóa học</h5>
+						<h3 class="mt-3 mb-3">14</h3>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card h-100 shadow-2-strong">
+					<div class="card-body">
+						<div class="float-end">
+							<i class="fas fa-rectangle-list"></i>
+						</div>
+						<h5 class="text-muted fw-normal mt-0" title="Number of Customers">Chuyên đề</h5>
+						<h3 class="mt-3 mb-3">6</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="col">
+				<div class="card h-100 shadow-2-strong">
+					<div class="card-body d-flex justify-content-center">
+						<canvas id="myChart" style="max-width: 500px; max-height: 500px"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
+<!--=============== MAIN JS ===============-->
+<script th:src="@{/assets/js/main.js}"></script>
+<!-- Chart JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                'Người dùng',
+                'Chuyên đề',
+                'Khóa học'
+            ],
+            datasets: [{
+                label: 'Dữ liệu thống kê',
+                data: [235, 6, 14],
+                backgroundColor: [
+                    '#ee99a0',
+                    '#8aadf4',
+                    '#a6da95'
+                ],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            plugins: { // not plugin
+                legend: { // extra layer: legend
+                    labels: { // with an "s"
+                        font: {
+                            family: "Google Sans", // right here,
+                            size: 16
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+<!-- MDB -->
+<script
+		type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"
+></script>
+</body>
+</html>

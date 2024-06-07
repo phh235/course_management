@@ -1,0 +1,1 @@
+package org.example.duanxuong.service;import org.example.duanxuong.entity.User;import java.util.List;import java.util.Optional;public interface UserService {    Optional<User> findByUserId(int userId);    List<User> findAllUser();    User doSaveUser(User user);    void doDeleteUserById(int userId);    User findByUsername(String username);}

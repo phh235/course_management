@@ -1,0 +1,1 @@
+package org.example.duanxuong.service;public interface CourseDetailService {}

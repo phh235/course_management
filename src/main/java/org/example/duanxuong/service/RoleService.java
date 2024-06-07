@@ -1,0 +1,1 @@
+package org.example.duanxuong.service;import org.example.duanxuong.entity.Role;import java.util.List;public interface RoleService {    List<Role> getAllRole();    Role doSaveRole(Role role);    List<Role> getByRoleName(String roleName);    void doGetDelete(int id);    List<Role> findByName(String roleName);}
