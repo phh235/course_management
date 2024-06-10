@@ -51,7 +51,7 @@
 							<i class="fas fa-user-group"></i>
 						</div>
 						<h5 class="text-muted fw-normal mt-0" title="Number of Customers">Người dùng</h5>
-						<h3 class="mt-3 mb-3">235</h3>
+						<h3 class="mt-3 mb-3" id="numberOfUsers">235</h3>
 					</div>
 				</div>
 			</div>
@@ -62,7 +62,7 @@
 							<i class="fas fa-graduation-cap"></i>
 						</div>
 						<h5 class="text-muted fw-normal mt-0" title="Number of Customers">Khóa học</h5>
-						<h3 class="mt-3 mb-3">14</h3>
+						<h3 class="mt-3 mb-3" id="numberOfCourses">14</h3>
 					</div>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 							<i class="fas fa-rectangle-list"></i>
 						</div>
 						<h5 class="text-muted fw-normal mt-0" title="Number of Customers">Chuyên đề</h5>
-						<h3 class="mt-3 mb-3">6</h3>
+						<h3 class="mt-3 mb-3" id="numberOfTopics">6</h3>
 					</div>
 				</div>
 			</div>
@@ -82,7 +82,7 @@
 			<div class="col">
 				<div class="card h-100 shadow-2-strong">
 					<div class="card-body d-flex justify-content-center">
-						<canvas id="myChart" style="max-width: 500px; max-height: 500px"></canvas>
+						<canvas id="myChart" style="max-width: 530px; max-height: 530px"></canvas>
 					</div>
 				</div>
 			</div>
@@ -93,48 +93,75 @@
 
 <!--=============== MAIN JS ===============-->
 <script th:src="@{/assets/js/main.js}"></script>
+<!--Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <!-- Chart JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('myChart');
+    async function fetchData(url) {
+        try {
+            const response = await axios.get(url);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    }
 
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: [
-                'Người dùng',
-                'Chuyên đề',
-                'Khóa học'
-            ],
-            datasets: [{
-                label: 'Dữ liệu thống kê',
-                data: [235, 6, 14],
-                backgroundColor: [
-                    '#ee99a0',
-                    '#8aadf4',
-                    '#a6da95'
-                ],
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            plugins: { // not plugin
-                legend: { // extra layer: legend
-                    labels: { // with an "s"
-                        font: {
-                            family: "Google Sans", // right here,
-                            size: 16
+    async function drawChart() {
+        const [userData, courseData, topicData] = await Promise.all([
+            fetchData('/user-api/getAllUser'),
+            fetchData('/course-api/getAllCourse'),
+            fetchData('/topic-api/getAllTopic')
+        ]);
+
+        if (!userData || !courseData || !topicData) {
+            console.error('Failed to fetch data');
+            return;
+        }
+
+        const numberOfUsers = userData.data.length;
+        const numberOfCourses = courseData.data.length;
+        const numberOfTopics = topicData.data.length;
+
+        document.getElementById('numberOfUsers').innerText = numberOfUsers;
+        document.getElementById('numberOfCourses').innerText = numberOfCourses;
+        document.getElementById('numberOfTopics').innerText = numberOfTopics;
+
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Người dùng', 'Khóa học', 'Chuyên đề'],
+                datasets: [{
+                    label: 'Dữ liệu thống kê',
+                    data: [numberOfUsers, numberOfCourses, numberOfTopics],
+                    backgroundColor: ['#ee99a0', '#8aadf4', '#a6da95'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                family: "Google Sans",
+                                size: 16
+                            }
                         }
                     }
                 }
             }
-        }
-    });
+        });
+    }
+
+    drawChart();
 </script>
 <!-- MDB -->
 <script
 		type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"
 ></script>
+
 </body>
 </html>
