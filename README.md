@@ -4,6 +4,8 @@
 &nbsp;
 <span><img src="https://img.shields.io/badge/Thymeleaf-282C34?logo=thymeleaf&logoColor=005F0F" alt="Thymleaf logo" title="Thymleaf" height="25" /></span>
 &nbsp;
+<span><img src="https://img.shields.io/badge/Axios-282C34?logo=axios&logoColor=axios" alt="Axios logo" title="Axios" height="25" /></span>
+&nbsp;
 <span><img src="https://img.shields.io/badge/SQL Server-282C34?logo=microsoftsqlserver&logoColor=CC2927" alt="SQL Server logo" title="SQL Server" height="25" /></span>
 &nbsp;
 <span><img src="https://img.shields.io/badge/Bootstrap-282C34?logo=bootstrap&logoColor=#7952B3" alt="Bootstrap logo" title="Bootstrap" height="25" /></span>
