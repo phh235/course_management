@@ -10,9 +10,6 @@
 &nbsp;
 </div>
 <h2 align="center">🌱 Thành viên trong nhóm:</h2>
-<div align="center"><p>Phan Huy Hoàng (Leader bình phong)</p> 
-<p>Dư Trọng Nhân (Leader ẩn)</p> 
+<div align="center"><p>Phan Huy Hoàng</p> 
 <p>Nguyễn Thị Trà My</p>
-<p>Nguyễn Thị Thuỳ Linh</p>
-<p>Nguyễn Tấn Tài</p>
 </div>
