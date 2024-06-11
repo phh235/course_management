@@ -1,0 +1,1 @@
+package org.example.duanxuong.service;import org.example.duanxuong.entity.Mail;public interface MailService {    void sendMail(Mail mailModel) throws Exception;}
