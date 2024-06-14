@@ -21,8 +21,6 @@ public class CourseController {
             List<Course> list=course.getAllCourse();
             model.addAttribute("courses",list);
             return "/admin/course";
-
-
         }
     }
 
