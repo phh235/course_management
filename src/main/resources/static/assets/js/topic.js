@@ -53,7 +53,7 @@ function deleteTopic(button) {
 function postTopic() {
     let id = document.getElementById('idInput').value;
     let name = document.getElementById('nameInput').value;
-    let image = document.getElementById('imageInput').value;
+    let image = document.getElementById('fileInput').value.split('\\')[2];
     let description = document.getElementById('motaInput').value;
 
     let insertTopic = {}
@@ -76,6 +76,7 @@ function postTopic() {
         .then(response => {
             if (!document.getElementById('idInput').value) {
                 if (response.data.success) {
+                    uploadFile();
                     Swal.fire({
                         icon: 'success',
                         title: 'Thành công',
@@ -137,8 +138,14 @@ function updateTopic(button) {
     document.getElementById('ex1-tabs-2').classList.toggle('show')
 
     let tds = button.parentElement.parentElement.getElementsByTagName('td')
-    let data = Array.from(tds).map((td) => td.textContent)
-    // console.table(data)
+    let data = Array.from(tds).map((td) => {
+        if (td.id === 'img-avatar') {
+            let img = td.querySelector('img');
+            return img ? img.src : '';
+        } else {
+            return td.textContent;
+        }
+    });
 
     let topic = {
         id: data[0],
@@ -156,8 +163,28 @@ fillDataToForm = (topic) => {
     document.getElementById('idInput').focus();
     document.getElementById('nameInput').value = topic.name;
     document.getElementById('nameInput').focus();
-    document.getElementById('imageInput').value = topic.image;
-    document.getElementById('imageInput').focus();
+    document.getElementById('imagePreview').src = topic.image;
     document.getElementById('motaInput').value = topic.description;
     document.getElementById('motaInput').focus();
+}
+
+function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    console.log(file)
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    axios.post('/uploadFile', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+        });
 }

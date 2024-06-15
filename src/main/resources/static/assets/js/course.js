@@ -5,14 +5,14 @@ function resetForm() {
     document.getElementById('topicInput').value = '';
     document.getElementById('gvInput').value = '';
     document.getElementById('dateInput').value = '';
-
 }
+
 function deleteCourse(button) {
     var id = button.getAttribute("data");
     console.log('Course: ' + id)
     console.log(button)
     Swal.fire({
-        title: 'Bạn có chắc chắn muốn xóa khóa học  này?',
+        title: 'Bạn có chắc chắn xóa không?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3b71ca',
@@ -49,31 +49,40 @@ function deleteCourse(button) {
         }
     });
 }
+
 function postCourse() {
-    let Id = document.getElementById('idInput').value;
-    let name = document.getElementById('nameInput').value;
-    let image = document.getElementById('imageInput').value;
-    let topic =document.getElementById('topicInput').value ;
+    let courseId = document.getElementById('idInput').value;
+    let courseName = document.getElementById('nameInput').value;
+    let courseImage = document.getElementById('fileInput').value.split('\\')[2];
+    let topic = document.getElementById('topicInput').value;
     let gv = document.getElementById('gvInput').value;
-    let date =  document.getElementById('dateInput').value ;
+    let creationDate = document.getElementById('dateInput').value;
 
     let insertCourse = {}
-    if (Id) {
+    if (courseId) {
         insertCourse = {
-            courseId: Id,
-            courseName: name,
-            courseImage: image,
-            topic:topic,
-            instructor: gv,
-            creationDate:date
+            courseId: courseId,
+            courseName: courseName,
+            courseImage: courseImage,
+            topic: {
+                id: topic
+            },
+            instructor: {
+                userId: gv
+            },
+            creationDate: creationDate
         };
     } else {
         insertCourse = {
-            courseName: name,
-            courseImage: image,
-            topic:topic,
-            instructor: gv,
-            creationDate:date
+            courseName: courseName,
+            courseImage: courseImage,
+            topic: {
+                id: topic
+            },
+            instructor: {
+                userId: gv
+            },
+            creationDate: creationDate
         };
     }
     console.table(insertCourse)
@@ -81,6 +90,7 @@ function postCourse() {
         .then(response => {
             if (!document.getElementById('idInput').value) {
                 if (response.data.success) {
+                    uploadFile();
                     Swal.fire({
                         icon: 'success',
                         title: 'Thêm khóa học thành công',
@@ -124,6 +134,7 @@ function postCourse() {
             });
         });
 }
+
 function updateCourse(button) {
     document.getElementById('ex1-tab-1').classList.toggle('active')
     document.getElementById('ex1-tab-1').classList.toggle('ripple-surface-primary')
@@ -135,37 +146,62 @@ function updateCourse(button) {
     document.getElementById('ex1-tabs-2').classList.toggle('show')
 
     let tds = button.parentElement.parentElement.getElementsByTagName('td')
-    let data = Array.from(tds).map((td) => td.textContent)
-    // console.table(data)
+    let data = Array.from(tds).map((td) => {
+        if (td.id === 'img-avatar') {
+            let img = td.querySelector('img');
+            return img ? img.src : '';
+        } else {
+            return td.textContent;
+        }
+    });
+    console.table(tds)
+    console.table(data)
 
     let course = {
-        id: data[0],
-        name: data[1],
-        image: data[2],
-        userId:data[3],
+        courseId: data[0],
+        courseName: data[1],
+        courseImage: data[2],
+        userId: data[3],
         topic: data[4],
-
-        date:data[5]
-
+        date: data[5]
     }
     fillDataToForm(course)
 }
 
 fillDataToForm = (course) => {
-    console.log(course.id)
+    console.log(course.courseId)
+    console.log(course.courseImage)
 
-
-    document.getElementById('idInput').value = course.id;
+    document.getElementById('idInput').value = course.courseId;
     document.getElementById('idInput').focus();
-    document.getElementById('nameInput').value = course.name;
+    document.getElementById('nameInput').value = course.courseName;
     document.getElementById('nameInput').focus();
-    document.getElementById('imageInput').value = course.image;
-    document.getElementById('imageInput').focus();
-    document.getElementById('topicInput').value= course.topic;
+    document.getElementById('imagePreview').src = course.courseImage;
+    document.getElementById('topicInput').value = course.topic;
     document.getElementById('topicInput').focus();
-    document.getElementById('gvInput').value=course.userId;
+    document.getElementById('gvInput').value = course.userId;
     document.getElementById('gvInput').focus();
-    document.getElementById('dateInput').value=course.date;
+    document.getElementById('dateInput').value = course.date;
     document.getElementById('dateInput').focus();
+}
 
+function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    console.log(file)
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    axios.post('/uploadFile', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+        });
 }
