@@ -80,7 +80,7 @@ function deleteTopic(button) {
     console.log('Topic: ' + id)
     console.log(button)
     Swal.fire({
-        title: 'Bạn có chắc chắn muốn xóa người dùng này?',
+        title: 'Bạn có chắc chắn muốn xóa chuyên đề này?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3b71ca',
