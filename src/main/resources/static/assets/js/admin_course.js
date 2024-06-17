@@ -2,39 +2,39 @@ function resetForm() {
     document.getElementById('idInput').value = '';
     document.getElementById('nameInput').value = '';
     document.getElementById('imageInput').value = '';
-    document.getElementById('motaInput').value = '';
+    document.getElementById('topicInput').value = '';
+    // document.getElementById('gvInput').value = '';
+    document.getElementById('dateInput').value = '';
 }
 
-function deleteTopic(button) {
+function deleteCourse(button) {
     var id = button.getAttribute("data");
-    console.log('Topic: ' + id)
+    console.log('Course: ' + id)
+    console.log(button)
     Swal.fire({
         title: 'Bạn có chắc chắn xóa không?',
-        text: 'Bạn sẽ không thể hoàn tác',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#139c49',
+        confirmButtonColor: '#3b71ca',
         cancelButtonColor: '#dc4c64',
-        confirmButtonText: 'Có, xóa nó',
+        confirmButtonText: 'OK',
         cancelButtonText: 'Hủy'
     }).then((result) => {
         if (result.isConfirmed) {
-            axios.delete(`/topic-api/deleteByIdTopic/${id}`)
+            axios.delete(`/course-api/deleteByIdCourse/${id}`)
                 .then(response => {
                     if (response.data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Thành công',
-                            text: 'Đã xóa chuyên đề.',
-                            timer: 2000,
-                            confirmButtonColor: '#3b71ca'
-                        }).then(() => {
+                        Swal.fire(
+                            'Đã xóa!',
+                            'Khóa học đã được xóa.',
+                            'success'
+                        ).then(() => {
                             location.reload();
-                        })
+                        });
                     } else {
                         Swal.fire(
                             'Lỗi!',
-                            'Không thể xóa chuyên đề.',
+                            'Không thể xóa khóa học.',
                             'error'
                         );
                     }
@@ -50,58 +50,68 @@ function deleteTopic(button) {
     });
 }
 
-function postTopic() {
-    let id = document.getElementById('idInput').value;
-    let name = document.getElementById('nameInput').value;
-    let image = document.getElementById('fileInput').value.split('\\')[2];
-    let description = document.getElementById('motaInput').value;
+function postCourse() {
+    let courseId = document.getElementById('idInput').value;
+    let courseName = document.getElementById('nameInput').value;
+    let courseImage = document.getElementById('fileInput').value.split('\\')[2];
+    let topic = document.getElementById('topicInput').value;
+    // let gv = document.getElementById('gvInput').value;
+    let creationDate = document.getElementById('dateInput').value;
 
-    let insertTopic = {}
-    if (id) {
-        insertTopic = {
-            id: id,
-            name: name,
-            image: image,
-            description: description
+    let insertCourse = {}
+    if (courseId) {
+        insertCourse = {
+            courseId: courseId,
+            courseName: courseName,
+            courseImage: courseImage,
+            topic: {
+                id: topic
+            },
+            // instructor: {
+            //     userId: gv
+            // },
+            creationDate: creationDate
         };
     } else {
-        insertTopic = {
-            name: name,
-            image: image,
-            description: description
+        insertCourse = {
+            courseName: courseName,
+            courseImage: courseImage,
+            topic: {
+                id: topic
+            },
+            // instructor: {
+            //     userId: gv
+            // },
+            creationDate: creationDate
         };
     }
-    console.table(insertTopic)
-    axios.post('/topic-api/postTopic', insertTopic)
+    console.table(insertCourse)
+    axios.post('/course-api/postCourse', insertCourse)
         .then(response => {
             if (!document.getElementById('idInput').value) {
                 if (response.data.success) {
                     uploadFile();
                     Swal.fire({
                         icon: 'success',
-                        title: 'Thành công',
-                        text: 'Đã thêm chuyên đề.',
-                        timer: 2000,
-                        confirmButtonColor: '#3b71ca'
+                        title: 'Thêm khóa học thành công',
+                        text: 'Thông tin khóa học đã được thêm thành công.',
+                        timer: 1500
                     }).then(() => {
                         location.reload();
                     });
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Thêm chuyên đề thất bại!',
-                        text: 'Đã xảy ra lỗi khi thêm thông tin chuyên đề. Vui lòng thử lại sau.',
-                        confirmButtonColor: '#3b71ca'
+                        title: 'Thêm khóa học thất bại',
+                        text: 'Đã xảy ra lỗi khi thêm thông tin khóa học. Vui lòng thử lại sau.',
                     });
                 }
             } else {
                 if (response.data.success) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Thành công',
-                        text: 'Đã cập nhật chuyên đề.',
-                        timer: 2000,
-                        confirmButtonColor: '#3b71ca'
+                        title: 'Cập nhật thông tin thành công',
+                        text: 'Thông tin khóa học đã cập nhật thành công.',
                     }).then(() => {
                         location.reload();
                     });
@@ -109,8 +119,7 @@ function postTopic() {
                     Swal.fire({
                         icon: 'error',
                         title: 'Cập nhật thông tin thất bại',
-                        text: 'Đã xảy ra lỗi khi cập nhật thông tin chuyên đề. Vui lòng thử lại sau.',
-                        confirmButtonColor: '#3b71ca'
+                        text: 'Đã xảy ra lỗi khi cập nhật thông tin khóa học. Vui lòng thử lại sau.',
                     });
                 }
             }
@@ -122,12 +131,11 @@ function postTopic() {
                 icon: 'error',
                 title: 'Lỗi',
                 text: 'Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại sau.',
-                confirmButtonColor: '#3b71ca'
             });
         });
 }
 
-function updateTopic(button) {
+function updateCourse(button) {
     document.getElementById('ex1-tab-1').classList.toggle('active')
     document.getElementById('ex1-tab-1').classList.toggle('ripple-surface-primary')
     document.getElementById('ex1-tabs-1').classList.toggle('active')
@@ -146,26 +154,32 @@ function updateTopic(button) {
             return td.textContent;
         }
     });
+    console.table(tds)
+    console.table(data)
 
-    let topic = {
-        id: data[0],
-        name: data[1],
-        image: data[2],
-        description: data[3]
+    let course = {
+        courseId: data[0],
+        courseName: data[1],
+        courseImage: data[2],
+        topic: data[3],
+        date: data[4]
     }
-    fillDataToForm(topic)
+    fillDataToForm(course)
 }
 
-fillDataToForm = (topic) => {
-    console.log(topic.id)
+fillDataToForm = (course) => {
+    console.log(course.courseId)
+    console.log(course.courseImage)
 
-    document.getElementById('idInput').value = topic.id;
+    document.getElementById('idInput').value = course.courseId;
     document.getElementById('idInput').focus();
-    document.getElementById('nameInput').value = topic.name;
+    document.getElementById('nameInput').value = course.courseName;
     document.getElementById('nameInput').focus();
-    document.getElementById('imagePreview').src = topic.image;
-    document.getElementById('motaInput').value = topic.description;
-    document.getElementById('motaInput').focus();
+    document.getElementById('imagePreview').src = course.courseImage;
+    document.getElementById('topicInput').value = course.topic;
+    document.getElementById('topicInput').focus();
+    document.getElementById('dateInput').value = course.date;
+    document.getElementById('dateInput').focus();
 }
 
 function uploadFile() {
