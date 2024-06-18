@@ -1,0 +1,1 @@
+package org.example.duanxuong.service;import org.example.duanxuong.entity.Rate;import java.util.List;public interface RateService {    List<Rate> getAllRate();    Rate doSaveRate(Rate rate);    void doGetDelete(int id);    List<Rate> getRatesByCourseId(int courseId);}

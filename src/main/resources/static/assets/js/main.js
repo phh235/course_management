@@ -28,7 +28,7 @@ sidebarLink.forEach(l => l.addEventListener('click', linkColor))
 // User cố tình truy cập Admin
 document.addEventListener("DOMContentLoaded", function () {
     // Kiểm tra roleName trong localStorage
-    const roleName = JSON.parse(localStorage.getItem('loggedInUser')).role.roleName;
+    let roleName = JSON.parse(localStorage.getItem('loggedInUser')).role.roleName;
     if (roleName === "User") {
         window.location.href = '/404';
     }
