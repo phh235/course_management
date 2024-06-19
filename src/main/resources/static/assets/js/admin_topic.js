@@ -5,7 +5,7 @@ function resetForm() {
 }
 
 function deleteTopic(button) {
-    var id = button.getAttribute("data");
+    let id = button.getAttribute("data");
     console.log('Topic: ' + id)
     Swal.fire({
         title: 'Bạn có chắc chắn xóa không?',

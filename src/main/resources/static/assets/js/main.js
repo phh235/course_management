@@ -1,6 +1,6 @@
 /*=============== SHOW SIDEBAR ===============*/
-const showSidebar = (toggleId, sidebarId, mainId) => {
-    const toggle = document.getElementById(toggleId),
+let showSidebar = (toggleId, sidebarId, mainId) => {
+    let toggle = document.getElementById(toggleId),
         sidebar = document.getElementById(sidebarId),
         main = document.getElementById(mainId)
 
@@ -16,7 +16,7 @@ const showSidebar = (toggleId, sidebarId, mainId) => {
 showSidebar('header-toggle', 'sidebar', 'main')
 
 /*=============== LINK ACTIVE ===============*/
-const sidebarLink = document.querySelectorAll('.sidebar__link')
+let sidebarLink = document.querySelectorAll('.sidebar__link')
 
 function linkColor() {
     sidebarLink.forEach(l => l.classList.remove('active-link'))

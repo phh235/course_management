@@ -3,12 +3,11 @@ function resetForm() {
     document.getElementById('nameInput').value = '';
     document.getElementById('imageInput').value = '';
     document.getElementById('topicInput').value = '';
-    // document.getElementById('gvInput').value = '';
     document.getElementById('dateInput').value = '';
 }
 
 function deleteCourse(button) {
-    var id = button.getAttribute("data");
+    let id = button.getAttribute("data");
     console.log('Course: ' + id)
     console.log(button)
     Swal.fire({
